@@ -1,0 +1,66 @@
+<p class="text-xs-center">Регистрация для получения доступа</p>
+<form [formGroup]="registrationForm" (ngSubmit) = "onSumbmit()">
+  <div class="form-group"  [ngClass]="{'has-error': registrationForm.get('email').invalid && registrationForm.get('email').touched}">
+    <label for="email">Email</label>
+    <input
+      type="text"
+      class="form-control underlined"
+      id="email"
+      placeholder="Введите email"
+      formControlName="email"
+    >
+    <span class="form-help-text has-error-input"
+          *ngIf="registrationForm.get('email').invalid && registrationForm.get('email').touched">
+      Неверный email
+    </span>
+  </div>
+  <div class="form-group has-error" [ngClass]="{'has-error': registrationForm.get('password').invalid && registrationForm.get('password').touched}">
+    <label for="password">Пароль</label>
+    <input
+      type="password"
+      class="form-control underlined"
+      id="password"
+      placeholder="Введите пароль"
+      formControlName="password"
+    >
+    <span class="form-help-text has-error-input"
+          *ngIf="registrationForm.get('password').invalid && registrationForm.get('password').touched">
+      Неверный пароль
+    </span>
+  </div>
+  <div class="form-group " [ngClass]="{'has-error': registrationForm.get('name').invalid && registrationForm.get('name').touched}">
+    <label for="name">Имя</label>
+    <input
+      type="text"
+      class="form-control underlined"
+      id="name"
+      placeholder="Введите имя"
+      formControlName="name"
+    >
+    <span class="form-help-text has-error-input"
+          *ngIf="registrationForm.get('name').invalid && registrationForm.get('name').touched">
+      Неверное имя
+    </span>
+  </div>
+  <div class="form-group" [ngClass]="{'has-error': registrationForm.get('agree').invalid && registrationForm.get('agree').touched}">
+    <label for="agree">
+      <input class="checkbox" id="agree" type="checkbox" formControlName="agree">
+      <span>Согласен с правилами</span>
+    </label>
+    <span class="form-help-text has-error-input"
+          *ngIf="registrationForm.get('agree').invalid">
+      Обязательное поле
+    </span>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-block btn-primary" [disabled]="registrationForm.invalid" >Зарегистрироваться</button>
+  </div>
+  <div class="form-group">
+    <p class="text-muted text-xs-center">
+      Уже есть аккаунт?
+      <a [routerLink]="'/login'">
+        Войти!
+      </a>
+    </p>
+  </div>
+</form>
