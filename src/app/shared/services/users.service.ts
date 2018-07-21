@@ -3,22 +3,33 @@ import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs';
 import {User} from '../models/user.model';
 import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/internal/operators';
+import {AngularFirestore, AngularFirestoreCollection} from "angularfire2/firestore";
 
 @Injectable()
 export class UsersService {
 
-  constructor(private http: HttpClient) {
-  }
+    itemsCollection: AngularFirestoreCollection<User>;
+    items: Observable<User[]>;
 
-  getUserByEmail(email: string): Observable<User> {
-    return this.http.get<User>(`http://localhost:3000/users`, {params: {email}})
-      .pipe(map(
-        (user: User) => user[0] ? user[0] : undefined
-      ));
-  }
+    constructor(private db: AngularFirestore) {
+        this.itemsCollection = this.db.collection('users');
+    }
 
-  createNewUser(user: User): Observable<User> {
-    return this.http.post<User>('http://localhost:3000/users', user);
-  }
+    getUserByEmail(email: string): Observable<any> {
+        return this.db.collection('users', ref => ref.where('email', '==', email)).snapshotChanges()
+            .map(actions => {
+                return actions.map(a => {
+                    const data = a.payload.doc.data();
+                    const id = a.payload.doc.id;
+                    return {id, ...data};
+                })
+            })
+            .map((user) => user[0] ? user[0] : undefined);
+
+    }
+
+    createNewUser(user: User): void {
+        this.itemsCollection.add(<User>user.getData());
+    }
+
 }

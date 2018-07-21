@@ -11,7 +11,8 @@
     >
     <span class="form-help-text has-error-input"
           *ngIf="registrationForm.get('email').invalid && registrationForm.get('email').touched">
-      Неверный email
+       <span *ngIf="registrationForm.get('email')['errors']['forBiddenEmail']">Email уже занят</span>
+      <span *ngIf="registrationForm.get('email')['errors']['email']"> Неверный email</span>
     </span>
   </div>
   <div class="form-group has-error" [ngClass]="{'has-error': registrationForm.get('password').invalid && registrationForm.get('password').touched}">
